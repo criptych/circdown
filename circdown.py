@@ -88,7 +88,6 @@ class FirmwareDownloader(S3):
                 int(cont.find('{*}Size').text),
                 datetime.datetime.strptime(cont.find('{*}LastModified').text, '%Y-%m-%dT%H:%M:%S.%f%z'),
             )
-        )
 
     def parse_common_prefixes(self, doc):
         for cont in doc.findall('.//{*}CommonPrefixes'):
