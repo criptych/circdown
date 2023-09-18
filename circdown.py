@@ -124,9 +124,15 @@ class FirmwareDownloader(S3):
     def download(self, image):
         with self._session.get(image.url, stream=True) as rsp:
             with open(image.name, 'wb') as fh:
-                for chunk in rsp.iter_content(None):
-                    fh.write(chunk)
+                progress = 0
 
+                for chunk in rsp.iter_content(1<<15):
+                    fh.write(chunk)
+                    progress += len(chunk)
+
+                    print('\r%12s' % humanfriendly.format_size(progress, True), end='', flush=True)
+
+                print()
 
 def main(args=None):
     parser = argparse.ArgumentParser()
